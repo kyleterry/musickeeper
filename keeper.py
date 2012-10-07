@@ -5,9 +5,6 @@ import argparse
 
 import id3reader
 
-MUSIC_DIR = '/home/kyle/unsorted_music'
-DESTINATION_DIR = '/home/kyle/Music'
-
 def main():
     parser = argparse.ArgumentParser(
             description='Sorts music into Artist/Album/01 - Song Title.mp3 like structures')
@@ -17,7 +14,7 @@ def main():
             dest='destination_dir', required=True,
             help='Destination directory (where the sorted music goes)')
     args = parser.parse_args()
-    for directory in os.walk(MUSIC_DIR):
+    for directory in os.walk(args.source_dir):
         for _file in directory[2]:
             _file = join(directory[0], _file)
             try:
@@ -27,7 +24,7 @@ def main():
             if not reader.getValue('performer'):
                 print 'ERROR: skipping %s' % _file
                 continue
-            artist_album = os.path.join(DESTINATION_DIR, 
+            artist_album = os.path.join(args.destination_dir,
                     reader.getValue('performer'),
                     reader.getValue('album'))
             track = reader.getValue('track')
