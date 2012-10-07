@@ -1,6 +1,7 @@
 import os
 from os.path import join, exists
 import shutil
+import argparse
 
 import id3reader
 
@@ -8,7 +9,14 @@ MUSIC_DIR = '/home/kyle/unsorted_music'
 DESTINATION_DIR = '/home/kyle/Music'
 
 def main():
-    #import ipdb; ipdb.set_trace()
+    parser = argparse.ArgumentParser(
+            description='Sorts music into Artist/Album/01 - Song Title.mp3 like structures')
+    parser.add_argument('-s', '--source', dest='source_dir', required=True,
+            help='Source directory (with the unsorted music in it)')
+    parser.add_argument('-d', '--destination',
+            dest='destination_dir', required=True,
+            help='Destination directory (where the sorted music goes)')
+    args = parser.parse_args()
     for directory in os.walk(MUSIC_DIR):
         for _file in directory[2]:
             _file = join(directory[0], _file)
