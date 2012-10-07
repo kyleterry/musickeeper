@@ -1,6 +1,5 @@
 import os
 from os.path import join, exists
-import glob
 import shutil
 
 import id3reader
