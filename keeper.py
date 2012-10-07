@@ -26,6 +26,8 @@ def main():
             track = reader.getValue('track')
             if '/' in track:
                 track = track.split('/')[0]
+            if len(track) == 1:
+                track = '0%s' % track
             new_file_name = '%s - %s.mp3' % (
                 track, reader.getValue('title').replace('/', ','))
             new_file_path = join(artist_album, new_file_name)
