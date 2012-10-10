@@ -5,6 +5,41 @@ import argparse
 
 import id3reader
 
+
+class InvalidSongError(Exception):
+    pass
+
+
+class Song(object):
+
+    def __init__(self, song_file):
+        self.song_file = song_file
+
+        try:
+            self.reader = id3reader(song_file)
+        except IOError:
+            raise InvalidSongError('%s is not a valid audio file' % song_file)
+
+        self.artist = self.reader.getvalue('performer').title()
+        self.track = self.clean_track(self.reader.getvalue('track'))
+        self.title = self.reader.getvalue('title').title()
+        self.album = self.reader.getvalue('album').title()
+        self.extension = self.parse_extension(song_file)
+
+    def clean_track(self, track):
+        if len(track) == 1:
+            track = '0%s' % track
+        return track
+
+    def parse_extension(self, song_file):
+        filename, extension = os.path.splittext(song_file)
+        return extension.strip('.')
+
+
+def song_factory(song_file):
+    pass
+
+
 def main():
     parser = argparse.ArgumentParser(
             description='Sorts music into Artist/Album/01 - Song Title.mp3 like structures')
